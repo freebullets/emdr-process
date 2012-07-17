@@ -1,1 +1,3 @@
 emdr_config.py
+*.pyc
+*~
