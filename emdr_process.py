@@ -47,6 +47,7 @@ def thread(message):
 
   if market_data.list_type == 'orders':
     orderIDs = []
+    typeIDs = []
     if len(market_data) == 0:
       pass #TODO: Add support for empty orders
     else:
@@ -55,15 +56,14 @@ def thread(message):
         for order in region: #TODO: Add timezone support
           insertData.append((order.order_id, str(order.generated_at).split("+", 1)[0], str(order.order_issue_date).split("+", 1)[0], order.type_id, round(order.price, 2), order.volume_entered, order.volume_remaining, order.order_range, order.order_duration, order.minimum_volume, int(order.is_bid), order.station_id, order.solar_system_id, order.region_id))
           orderIDs.append(str(int(order.order_id))) #hacky SQLi protection
-        deleteData.append((0,))
-        sql = "DELETE FROM `marketOrders` WHERE `regionID` = %s AND `orderID` NOT IN (" + ", ".join(orderIDs) + ")"
+          typeIDs.append(str(int(order.type_id)))
+        deleteData.append((region.region_id,))
+        sql = "DELETE FROM `marketOrders` WHERE `regionID` = %s AND `typeID` IN (" + list(set(typeIDs)) + ") AND `orderID` NOT IN (" + ", ".join(orderIDs) + ")"
         query.executeMany(sql, deleteData)
-        # print(sql)
     sql =  "INSERT INTO `marketOrders` (`orderID`, `generationDate`, `issueDate`, `typeID`, `price`, `volEntered`, `volRemaining`, `range`, `duration`, `minVolume`, `bid`, `stationID`, `solarSystemID`, `regionID`) "
     sql += "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
     sql += "ON DUPLICATE KEY UPDATE `generationDate`=VALUES(`generationDate`), `issueDate`=VALUES(`issueDate`), `typeID`=VALUES(`typeID`), `price`=VALUES(`price`), `volEntered`=VALUES(`volEntered`), `volRemaining`=VALUES(`volRemaining`), `range`=VALUES(`range`), `duration`=VALUES(`duration`), `minVolume`=VALUES(`minVolume`), `bid`=VALUES(`bid`), `stationID`=VALUES(`stationID`), `solarSystemID`=VALUES(`solarSystemID`), `regionID`=VALUES(`regionID`)"
     query.executeMany(sql, insertData)
-    # print(sql)
 
 
   elif market_data.list_type == 'history': #TODO: Add support for history data
