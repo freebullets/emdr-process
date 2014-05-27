@@ -15,13 +15,13 @@ from hotqueue import HotQueue
 MAX_NUM_POOL_WORKERS = 200
 
 # Change this to point to whatever relay you want to use
-receiver_uri = 'tcp://relay-us-central-1.eve-emdr.com:8050'
-#receiver_uri = 'tcp://relay-us-east-1.eve-emdr.com:8050'
+# receiver_uri = 'tcp://relay-us-central-1.eve-emdr.com:8050'
+receiver_uri = 'tcp://relay-us-east-1.eve-emdr.com:8050'
 
 #receiver_uri = 'tcp://localhost:8050'
 #receiver_uri = 'tcp://192.168.1.11:8050'
 
-queue = HotQueue("emdr", unix_socket_path="/tmp/redis.sock")
+queue = HotQueue("emdr", unix_socket_path="/var/run/redis/redis.sock")
 
 def main():
   """
@@ -53,7 +53,7 @@ def worker(job_json):
   """
 
   # Push the message onto the queue
-  print("got a job")
+  # print("got a job")
   queue.put(job_json)
   
 if __name__ == '__main__':
