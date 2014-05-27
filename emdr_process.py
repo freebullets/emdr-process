@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import sys
 from emds.formats import unified
 from emds.common_utils import now_dtime_in_utc
 import zlib
@@ -11,13 +12,14 @@ from gevent import monkey; gevent.monkey.patch_all()
 import emdr_config as config
 
 # Max number of greenlet workers
-MAX_NUM_POOL_WORKERS = 10
+MAX_NUM_POOL_WORKERS = 15
 
 # use a greenlet pool to cap the number of workers at a reasonable level
 gpool = Pool(size=MAX_NUM_POOL_WORKERS)
 
 queue = HotQueue("emdr", unix_socket_path="/var/run/redis/redis.sock")
 connection = pysqlpool.getNewConnection(username=config.dbuser, password=config.dbpass, unix_socket=config.dbsocket, db=config.dbname)
+# connection = pysqlpool.getNewConnection(username=config.dbuser, password=config.dbpass, host=config.dbhost , db=config.dbname)
 
 def main():
   for message in queue.consume():
@@ -35,9 +37,10 @@ def process(message):
     orderIDs = []
     typeIDs = []
     if len(market_data) == 0:
+      pass
       # insertData.append((order.region_id, ))
-      for region in market_data.get_all_order_groups():
-        print("No orders for item %s" % region)
+      # for region in market_data.get_all_order_groups():
+      #   print("No orders for item %s" % region)
     else:
       for region in market_data.get_all_order_groups():
         for order in region:
@@ -48,10 +51,10 @@ def process(message):
           if str(order.generated_at).split("+", 1)[1] == 0:
             print("Order generated: %s" % order.generated_at)
         deleteData.append((region.region_id,))
-        sql = "DELETE FROM `marketOrders` WHERE `regionID` = %s AND `typeID` IN (" + ", ".join(list(set(typeIDs))) + ") AND `orderID` NOT IN (" + ", ".join(orderIDs) + ")"
+        sql = "DELETE FROM `marketOrdersMem` WHERE `regionID` = %s AND `typeID` IN (" + ", ".join(list(set(typeIDs))) + ") AND `orderID` NOT IN (" + ", ".join(orderIDs) + ")"
         query.executeMany(sql, deleteData)
     # This query uses INSERT ... ON DUPLICATE KEY UPDATE syntax. It has a condition to only update the row if the new row's generationDate is newer than the stored generationDate. We don't want to replace our data with older data. We don't use REPLACE because we need to have this condition. Querying the table for existing data is possible for a cleaner statement, but it would probably result in slower inserts.
-    sql  = 'INSERT INTO `marketOrders` (`orderID`, `generationDate`, `issueDate`, `typeID`, `price`, `volEntered`, '
+    sql  = 'INSERT INTO `marketOrdersMem` (`orderID`, `generationDate`, `issueDate`, `typeID`, `price`, `volEntered`, '
     sql += '`volRemaining`, `range`, `duration`, `minVolume`, `bid`, `stationID`, `solarSystemID`, `regionID`) '
     sql += 'VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) '
     sql += 'ON DUPLICATE KEY UPDATE '
@@ -77,6 +80,8 @@ def process(message):
   
   gevent.sleep()
   pysqlpool.getNewPool().Commit()
+  sys.stdout.write(".")
+  sys.stdout.flush()
 
 if __name__ == '__main__':
   main()

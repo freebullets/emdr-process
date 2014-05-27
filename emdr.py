@@ -4,6 +4,7 @@ Get the data from EMDR and shove it into the redis queue
 Greg Oberfield gregoberfield@gmail.com
 """
 
+import sys
 import zlib
 import zmq.green as zmq
 import gevent
@@ -55,6 +56,8 @@ def worker(job_json):
   # Push the message onto the queue
   # print("got a job")
   queue.put(job_json)
+  sys.stdout.write(".")
+  sys.stdout.flush()
   
 if __name__ == '__main__':
   main()
