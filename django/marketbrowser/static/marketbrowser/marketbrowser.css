@@ -1,0 +1,57 @@
+/*table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}*/
+
+table {
+    max-height: 200px;
+    overflow: auto;
+}
+
+table td.shrink {
+    white-space:nowrap
+}
+table td.expand {
+    width: 100%
+}
+
+.right {
+    text-align: right;
+}
+
+.sec0\.0 {
+    color: #F00000;
+}
+.sec0\.1 {
+    color: #D73000;
+}
+.sec0\.2 {
+    color: #F04800;
+}
+.sec0\.3 {
+    color: #F06000;
+}
+.sec0\.4 {
+    color: #D77700;
+}
+.sec0\.5 {
+    color: #EFEF00;
+}
+.sec0\.6 {
+    color: #8FEF2F;
+}
+.sec0\.7 {
+    color: #00F000;
+}
+.sec0\.8 {
+    color: #00EF47;
+}
+.sec0\.9 {
+    color: #48F0C0;
+}
+.sec1\.0 {
+    color: #2FEFEF;
+}

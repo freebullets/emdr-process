@@ -1,3 +1,4 @@
 emdr_config.py
 *.pyc
 *~
+*.kate-swp

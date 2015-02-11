@@ -1,0 +1,74 @@
+{% extends "marketbrowser/base.html" %}
+{% load humanize %}
+
+{% block head %}
+<link rel="icon" type="image/png" href="http://image.eveonline.com/InventoryType/{{ type.typeid }}_64.png">
+<title>{{ type }} in {{ region }}</title>
+{% endblock %}
+
+{% block content %}
+{% if sells or buys %}
+<h1><img src="http://image.eveonline.com/InventoryType/{{ type.typeid }}_64.png" class="img-rounded">{{ type }} in {{ region }}</h1>
+<p>Data last updated {{ freshness|naturaltime }}</p>
+    {% if sells %}
+    <h2>Sell Orders:</h2>
+    <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+            <th class="shrink">Sec</th>
+            <th class="expand">Station</th>
+            <th class="shrink">Price</th>
+            <th class="shrink">Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in sells %}
+        <tr>
+            <td class="shrink sec{{ order.solarsystemid.security|floatformat:'1' }}">• {{ order.solarsystemid.security|floatformat:"1" }}</td>
+            <td class="expand">{{ order.stationid }}</td>
+            <td class="shrink right">{{ order.price|floatformat:"2"|intcomma }}</td>
+            <td class="shrink right">{{ order.volremaining|intcomma }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    {% if buys %}
+    <h2>Buy Orders:</h2>
+    <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+            <th class="shrink">Sec</th>
+            <th class="expand">System</th>
+            <th class="shrink">Price</th>
+            <th class="shrink">Min</th>
+            <th class="shrink">Quantity</th>
+            <th class="shrink">Range</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in buys %}
+        <tr>
+            <td class="shrink sec{{ order.solarsystemid.security|floatformat:'1' }}">• {{ order.solarsystemid.security|floatformat:"1" }}</td>
+            <td class="expand">{{ order.stationid }}</td>
+            <td class="shrink right">{{ order.price|floatformat:"2"|intcomma }}</td>
+            <td class="shrink right">{% if order.minvolume > 1 %}{{ order.minvolume }}{% endif %}</td>
+            <td class="shrink right">{{ order.volremaining|intcomma }}</td>
+            {% if order.range == -1 %}
+            <td class="shrink right">{{ "Station" }}</td>
+            {% elif order.range == 0 %}
+            <td class="shrink right">{{ "System" }}</td>
+            {% elif order.range == 32767 %}
+            <td class="shrink right">{{ "Region" }}</td>
+            {% else %}
+            <td class="shrink right">{{ order.range }}</td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+{% else %}
+<h1>No {{ type }} orders in {{ region }}</h1>
+{% endif %}
+{% endblock %}
