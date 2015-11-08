@@ -40,6 +40,10 @@ sock.on('message', function(msg) {
 // Removes obsolete completed jobs
 queue.on('job complete', function(id) {
     kue.Job.get(id, function(err, job) {
-        job.remove();
+        try {
+            job.remove();
+        } catch (err) {
+            console.error("Could not remove job.");
+        }
     });
 });

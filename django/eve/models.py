@@ -72,7 +72,8 @@ class Type(models.Model):
     baseprice = models.DecimalField(db_column='basePrice', max_digits=19, decimal_places=4, blank=True, null=True) # Field name made lowercase.
     published = models.IntegerField(blank=True, null=True)
     marketgroupid = models.ForeignKey(MarketGroup, db_column='marketGroupID', blank=True, null=True) # Field name made lowercase.
-    chanceofduplicating = models.FloatField(db_column='chanceOfDuplicating', blank=True, null=True) # Field name made lowercase.
+    iconid = models.IntegerField(db_column='iconID', blank=True, null=True) # Field name made lowercase.
+    soundid = models.IntegerField(db_column='soundID', blank=True, null=True) # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'invTypes'

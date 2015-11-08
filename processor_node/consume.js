@@ -89,9 +89,14 @@ queue.process('orders', 1, function(job, done) {
                     console.log("Deleted rows: " + result.affectedRows);
 
                     for (var i = 0; i < job.data.rowsets[0].rows.length; i++) {
+                        // Format date for MySQL
+                        datetime_a = job.data.rowsets[0].rows[i][7].split(/[T\+]/);
+                        job.data.rowsets[0].rows[i][7] = datetime_a[0] + " " + datetime_a[1];
+
                         job.data.rowsets[0].rows[i].push(job.data.rowsets[0].typeID);
                         job.data.rowsets[0].rows[i].push(job.data.rowsets[0].regionID);
-                        job.data.rowsets[0].rows[i].push(job.data.rowsets[0].generatedAt);
+                        datetime_b = job.data.rowsets[0].generatedAt.split(/[T\+]/);  // Split string on T and +
+                        job.data.rowsets[0].rows[i].push(datetime_b[0] + " " + datetime_b[1]);
                     }
 
                     if (job.data.rowsets[0].rows.length > 0)
@@ -131,9 +136,14 @@ queue.process('history', 1, function(job, done) {
     }
 
     for (var i = 0; i < job.data.rowsets[0].rows.length; i++) {
+        // Format date for MySQL
+        datetime_a = job.data.rowsets[0].rows[i][0].split(/[T\+]/);
+        job.data.rowsets[0].rows[i][0] = datetime_a[0] + " " + datetime_a[1];
+
         job.data.rowsets[0].rows[i].push(job.data.rowsets[0].typeID);
         job.data.rowsets[0].rows[i].push(job.data.rowsets[0].regionID);
-        job.data.rowsets[0].rows[i].push(job.data.rowsets[0].generatedAt);
+        datetime_b = job.data.rowsets[0].generatedAt.split(/[T\+]/);  // Split string on T and +
+        job.data.rowsets[0].rows[i].push(datetime_b[0] + " " + datetime_b[1]);
     }
 
     connection.query('INSERT INTO `items_history` (`date`, `num_orders`, `quantity`, `price_low`, `price_high`, `price_average`, `type_id`, `region_id`, `created`) VALUES ? ON DUPLICATE KEY UPDATE `price_low`=VALUES(`price_low`), `price_high`=VALUES(`price_high`), `price_average`=VALUES(`price_average`), `quantity`=VALUES(`quantity`), `num_orders`=VALUES(`num_orders`)', 

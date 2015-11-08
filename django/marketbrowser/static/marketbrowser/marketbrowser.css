@@ -6,6 +6,10 @@ table, th, td {
     border: 1px solid black;
 }*/
 
+body { 
+    padding-top: 50px; 
+}
+
 table {
     max-height: 200px;
     overflow: auto;
