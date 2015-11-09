@@ -19,6 +19,8 @@ processor:
   links:
     - redis
     - database
+  volumes:
+    - ..:/root/emdr-process
 
 web:
   build: django-dev

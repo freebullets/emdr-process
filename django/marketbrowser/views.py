@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import RequestContext
-from eve.models import Type, Region, MarketOrder, MarketHistory
+from common.models import Type, Region, MarketOrder, MarketHistory
 import json
 
 def index(request):

@@ -1,0 +1,21 @@
+{
+    "name": "emdr-process",
+    "version": "1.0.0",
+    "description": "Subscribes to EVE EMDR data and stores in database",
+    "author": "Jesse Kennedy <jesse@jkennedy.pw>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jgkennedy/emdr-process"
+    },
+    "bugs": {
+        "url": "https://github.com/jgkennedy/emdr-process/issues"
+    },
+    "keywords": [],
+    "dependencies": {
+        "kue": "*",
+        "mysql": "*",
+        "zmq": "1.0.0"
+    },
+    "devDependencies": {},
+    "private": true
+}

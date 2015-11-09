@@ -80,6 +80,9 @@ class Constellation(models.Model):
     zmax = models.FloatField(db_column='zMax', blank=True, null=True)
     factionid = models.IntegerField(db_column='factionID', blank=True, null=True)
     radius = models.FloatField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'mapRegions'
 
 class SolarSystem(models.Model):
     regionid = models.ForeignKey(Region, db_column='regionID', blank=True, null=True)
