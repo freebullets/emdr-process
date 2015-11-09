@@ -13,7 +13,6 @@ Assuming you've cloned the repository to ~/repos/emdr-process, run it with:
 ```
 docker run -it --rm -p 31337:31337 \
 	-v ~/repos/emdr-process:/root/emdr-process \
-	-v ~/repos/emdr-process/webapp/django/eve/sqlite:/root/emdr-process/webapp/django/eve/sqlite \
 	jgkennedy/emdr-process
 ```
 

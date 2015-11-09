@@ -1,0 +1,3 @@
+django-----mariadb-----processor
+                           |
+                         redis

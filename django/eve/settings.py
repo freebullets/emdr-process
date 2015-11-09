@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'eve.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(os.path.dirname(os.path.realpath(__file__)), 'sqlite', 'eve.db'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'eve',
+        'USER': 'root',
+        'PASSWORD': 'emdr-password',
+        'HOST': 'database',
+        'PORT': '3306',
     }
 }
 

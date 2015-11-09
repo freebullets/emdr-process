@@ -1,1 +1,30 @@
- 
+redis:
+  image: redis
+  restart: always
+  volumes:
+    - ./persistent-data/redis:/data
+
+database:
+  image: mariadb
+  restart: always
+  volumes:
+    - ./persistent-data/mariadb:/var/lib/mysql
+    - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  environment:
+    MYSQL_ROOT_PASSWORD: "emdr-password"
+    MYSQL_DATABASE: "eve"
+
+processor:
+  build: processor-node
+  links:
+    - redis
+    - database
+
+web:
+  build: django-dev
+  links:
+    - database
+  ports:
+    - "31337:31337"
+  volumes:
+    - ..:/root/emdr-process
