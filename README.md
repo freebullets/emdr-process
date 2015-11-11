@@ -2,18 +2,21 @@
 
 This project was created to aid traders in the popular MMO, EVE Online. It connects to relays running the [EVE market data relay](https://github.com/gtaylor/EVE-Market-Data-Relay) service, parses the data, and stores it in a MySQL database. The EMDR relays are run by volunteered servers, and in-game market data is read from the game's cache and uploaded to a relay. The project also contains a simple web interface created with Bootstrap and Django. 
 
-## Features:
+## Features
 
  - Subscribes to the EMDR relay service
  - Parses the incoming data stream and stores it in a MySQL database
  - The Django website sends queries based on the item and region input and displays its data
 
-## Wishlist:
+## Wishlist
 
  - Display historic data with fancy graphs
  - Create more ways of visualizing market data
    - Create an arbitrage view to analyze opportunities to trade items between regions for quick profit
  - Improve Node.js code
+
+## Live demo
+https://evetools.xyz (soon)
 
 ## Performance
 
