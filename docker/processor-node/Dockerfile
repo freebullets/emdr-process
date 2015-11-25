@@ -1,9 +1,10 @@
-FROM ubuntu:trusty
+FROM zeromq/zeromq
 
-RUN apt-get update && apt-get install -y build-essential nodejs-legacy npm git git-core libzmq-dev libzmq3
+RUN apt-get update && apt-get install -y build-essential nodejs-legacy npm
 
-ADD package.json /tmp/package.json
-RUN cd /tmp && npm install -g
+WORKDIR /
+RUN npm install -g kue mysql zmq
 
 WORKDIR /root/emdr-process/processor_node
 CMD node queue.js
+EXPOSE 3000

@@ -3,7 +3,12 @@ var sock = zmq.socket('sub');
 var zlib = require('zlib');
 var kue = require('kue');
 
-var queue = kue.createQueue( { disableSearch: true } );  // Disables that pesky indexing overhead
+var queue = kue.createQueue({
+    redis: {
+        host: 'redis'
+    },
+    disableSearch: true  // Disables that pesky indexing overhead
+});
 var kue_app = kue.app.listen(3000);
 kue.app.set('title', 'EMDR Job Monitor');
 

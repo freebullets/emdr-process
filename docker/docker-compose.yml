@@ -19,8 +19,12 @@ processor:
   links:
     - redis
     - database
+  ports:
+    - "3000:3000"
   volumes:
     - ..:/root/emdr-process
+  environment:
+    NODE_PATH: /usr/local/lib/node_modules/
 
 web:
   build: django-dev

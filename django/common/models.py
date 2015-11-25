@@ -163,7 +163,7 @@ class MarketOrder(models.Model):
     duration = models.IntegerField()
     minvolume = models.IntegerField(db_column='minVolume')
     bid = models.BooleanField()
-    stationid = models.ForeignKey(Station, db_column='stationID')
+    stationid = models.ForeignKey(Station, db_column='stationID', db_constraint=False)
     solarsystemid = models.ForeignKey(SolarSystem, db_column='solarSystemID')
     regionid = models.ForeignKey(Region, db_column='regionID')
     class Meta:
@@ -172,9 +172,9 @@ class MarketOrder(models.Model):
         return unicode(self.typeid)
 
 class MarketHistory(models.Model):
-    region = models.ForeignKey(Region)
+    region = models.ForeignKey(Region, db_column='regionID')
     date = models.DateField()
-    type = models.ForeignKey(Type)
+    typeID = models.ForeignKey(Type, db_column='typeID')
     price_low = models.FloatField()
     price_high = models.FloatField()
     price_average = models.FloatField()

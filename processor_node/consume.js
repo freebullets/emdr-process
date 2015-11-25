@@ -1,11 +1,16 @@
 var kue = require('kue');
-var queue = kue.createQueue( { disableSearch: true } );
+var queue = kue.createQueue({
+    redis: {
+        host: 'redis'
+    },
+    disableSearch: true  // Disables that pesky indexing overhead
+});
 
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-    host: 'localhost',
+    host: 'database',
     user: 'root',
-    password: '',
+    password: 'emdr-password',
     database: 'eve'
 });
 connection.connect();
@@ -101,20 +106,19 @@ queue.process('orders', 1, function(job, done) {
 
                     if (job.data.rowsets[0].rows.length > 0)
                         connection.query('REPLACE INTO `marketOrders` (`price`,`volRemaining`,`range`,`orderID`,`volEntered`,`minVolume`,`bid`,`issueDate`,`duration`,`stationID`,`solarSystemID`,`typeID`,`regionID`,`generationDate`) VALUES ?', 
-                            [job.data.rowsets[0].rows], 
-                            function(err, result) {
-                                if (err) {
-                                    console.error(err);
-                                    console.error("Rows length was " + job.data.rowsets[0].rows.length);
-                                    done(err);
-                                    return;
-                                }
-
-                                console.log("Updated rows: " + result.affectedRows);
-
-                                done();
+                        [job.data.rowsets[0].rows], 
+                        function(err, result) {
+                            if (err) {
+                                console.error(err);
+                                console.error("Rows length was " + job.data.rowsets[0].rows.length);
+                                done(err);
+                                return;
                             }
-                        );
+
+                            console.log("Updated rows: " + result.affectedRows);
+
+                            done();
+                        });
                     else
                         done();
                 }
@@ -146,7 +150,7 @@ queue.process('history', 1, function(job, done) {
         job.data.rowsets[0].rows[i].push(datetime_b[0] + " " + datetime_b[1]);
     }
 
-    connection.query('INSERT INTO `items_history` (`date`, `num_orders`, `quantity`, `price_low`, `price_high`, `price_average`, `type_id`, `region_id`, `created`) VALUES ? ON DUPLICATE KEY UPDATE `price_low`=VALUES(`price_low`), `price_high`=VALUES(`price_high`), `price_average`=VALUES(`price_average`), `quantity`=VALUES(`quantity`), `num_orders`=VALUES(`num_orders`)', 
+    connection.query('INSERT INTO `marketHistory` (`date`, `num_orders`, `quantity`, `price_low`, `price_high`, `price_average`, `typeID`, `regionID`, `created`) VALUES ? ON DUPLICATE KEY UPDATE `price_low`=VALUES(`price_low`), `price_high`=VALUES(`price_high`), `price_average`=VALUES(`price_average`), `quantity`=VALUES(`quantity`), `num_orders`=VALUES(`num_orders`)', 
         [job.data.rowsets[0].rows],
         function(err, rows, fields) {
             if (err) {
