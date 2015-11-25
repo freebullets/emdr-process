@@ -9,8 +9,10 @@
 # into your database.
 
 from __future__ import unicode_literals
+from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 
+@python_2_unicode_compatible
 class MarketGroup(models.Model):
     marketgroupid = models.IntegerField(db_column='marketGroupID', primary_key=True)
     parentgroupid = models.IntegerField(db_column='parentGroupID', blank=True, null=True)
@@ -21,9 +23,10 @@ class MarketGroup(models.Model):
     class Meta:
         managed = False
         db_table = 'invMarketGroups'
-    def __unicode__(self):
+    def __str__(self):
         return self.marketgroupname
 
+@python_2_unicode_compatible
 class Type(models.Model):
     typeid = models.IntegerField(db_column='typeID', primary_key=True)
     groupid = models.IntegerField(db_column='groupID', blank=True, null=True)
@@ -42,9 +45,10 @@ class Type(models.Model):
     class Meta:
         managed = False
         db_table = 'invTypes'
-    def __unicode__(self):
+    def __str__(self):
         return self.typename
 
+@python_2_unicode_compatible
 class Region(models.Model):
     regionid = models.AutoField(db_column='regionID', primary_key=True)
     regionname = models.CharField(db_column='regionName', max_length=200, blank=True)
@@ -62,9 +66,10 @@ class Region(models.Model):
     class Meta:
         managed = False
         db_table = 'mapRegions'
-    def __unicode__(self):
+    def __str__(self):
         return self.regionname
 
+@python_2_unicode_compatible
 class Constellation(models.Model):
     regionid = models.ForeignKey(Region, db_column='regionID', blank=True, null=True)
     constellationid = models.AutoField(db_column='constellationID', primary_key=True)
@@ -84,6 +89,7 @@ class Constellation(models.Model):
         managed = False
         db_table = 'mapRegions'
 
+@python_2_unicode_compatible
 class SolarSystem(models.Model):
     regionid = models.ForeignKey(Region, db_column='regionID', blank=True, null=True)
     constellationid = models.ForeignKey(Constellation, db_column='constellationID', blank=True, null=True)
@@ -114,9 +120,10 @@ class SolarSystem(models.Model):
     class Meta:
         managed = False
         db_table = 'mapSolarSystems'
-    def __unicode__(self):
+    def __str__(self):
         return self.solarsystemname
 
+@python_2_unicode_compatible
 class Station(models.Model):
     stationid = models.IntegerField(db_column='stationID', primary_key=True)
     security = models.SmallIntegerField(blank=True, null=True)
@@ -139,7 +146,7 @@ class Station(models.Model):
     class Meta:
         managed = False
         db_table = 'staStations'
-    def __unicode__(self):
+    def __str__(self):
         return self.stationname
     def short(self):
         if not self.stationname:
@@ -151,6 +158,7 @@ class Station(models.Model):
         if len(station_split) > 2:
             return station_split[0] + ' / M' + station_split[1].split(" ")[1] + ' / ' + station_abbr
 
+@python_2_unicode_compatible
 class MarketOrder(models.Model):
     orderid = models.BigIntegerField(db_column='orderID', primary_key=True)
     generationdate = models.DateTimeField(db_column='generationDate')
@@ -168,9 +176,10 @@ class MarketOrder(models.Model):
     regionid = models.ForeignKey(Region, db_column='regionID')
     class Meta:
         db_table = 'marketOrders'
-    def __unicode__(self):
-        return unicode(self.typeid)
+    def __str__(self):
+        return str(self.typeid)
 
+@python_2_unicode_compatible
 class MarketHistory(models.Model):
     region = models.ForeignKey(Region, db_column='regionID')
     date = models.DateField()
@@ -183,5 +192,5 @@ class MarketHistory(models.Model):
     created = models.DateTimeField()
     class Meta:
         db_table = 'marketHistory'
-    def __unicode__(self):
-        return unicode(self.type)
+    def __str__(self):
+        return str(self.type)
