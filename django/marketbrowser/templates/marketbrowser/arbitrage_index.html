@@ -17,16 +17,16 @@
         <th class="shrink">Forge Buy</th>
         <th class="shrink">Forge Units</th>
         <th class="shrink">Total Profit</th>
-        <th class="shrink">Date Difference</th>
+        <th class="shrink">Minutes Old</th>
     </tr>
     </thead>
     <tbody>
     {% for type in result %}
     <tr>
         <td class="shrink">{{ type.typename }}</td>
-        <td class="shrink">{{ type.citadelSell|floatformat:"2"|intcomma }}</td>
+        <td class="shrink"><a href="/market/{{type.citadelRegion}}/{{type.pk}}/">{{ type.citadelSell|floatformat:"2"|intcomma }}</a></td>
         <td class="shrink">{{ type.citadelUnits|intcomma }}</td>
-        <td class="shrink">{{ type.forgeBuy|floatformat:"2"|intcomma }}</td>
+        <td class="shrink"><a href="/market/{{type.forgeRegion}}/{{type.pk}}/">{{ type.forgeBuy|floatformat:"2"|intcomma }}</a></td>
         <td class="shrink">{{ type.forgeUnits|intcomma }}</td>
         <td class="shrink">{{ type.profit|floatformat:"2"|intcomma }}</td>
         <td class="shrink">{{ type.dateDiff }}</td>
