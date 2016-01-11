@@ -1,30 +1,52 @@
 redis:
   image: redis
-  restart: always
   volumes:
     - ./persistent-data/redis:/data
+  log_driver: "json-file"
+  log_opt:
+    max-size: "1000"
+    max-file: "2"
 
 database:
   image: mariadb
-  restart: always
   volumes:
     - ./persistent-data/mariadb:/var/lib/mysql
-    - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    - ./mariadb.initdb.d:/docker-entrypoint-initdb.d
+    - ./mariadb.conf.d:/etc/mysql/conf.d
   environment:
     MYSQL_ROOT_PASSWORD: "emdr-password"
     MYSQL_DATABASE: "eve"
+  ports:
+    - "3306:3306"
 
-processor:
-  build: processor-node
+processor-queue:
+  build: processor-queue-node
   links:
     - redis
-    - database
   ports:
     - "3000:3000"
   volumes:
     - ..:/root/emdr-process
   environment:
     NODE_PATH: /usr/local/lib/node_modules/
+  log_driver: "json-file"
+  log_opt:
+    max-size: "10000"
+    max-file: "2"
+
+processor-consume:
+  build: processor-consume-node
+  links:
+    - redis
+    - database
+  volumes:
+    - ..:/root/emdr-process
+  environment:
+    NODE_PATH: /usr/local/lib/node_modules/
+  log_driver: "json-file"
+  log_opt:
+    max-size: "10000"
+    max-file: "2"
 
 web:
   build: django-dev

@@ -48,6 +48,32 @@ class Type(models.Model):
     def __str__(self):
         return self.typename
 
+#@python_2_unicode_compatible
+#class BlueprintMaterial(models.Model):
+#    id = models.AutoField(primary_key=True)
+#    typeid = models.ForeignKey(Type, db_column='typeID')
+#    activityid = models.IntegerField(db_column='activityID')
+#    materialtypeid = models.ForeignKey(Type, db_column='materialTypeID')
+#    quantity = models.IntegerField(db_column='quantity')
+#    class Meta:
+#        managed = False
+#        db_table = 'industryActivityMaterials'
+#    def __str__(self):
+#        return self.typeid.typename + " : " + self.materialtypeid.typename
+#
+#@python_2_unicode_compatible
+#class BlueprintProduct(models.Model):
+#    id = models.AutoField(primary_key=True)
+#    typeid = models.ForeignKey(Type, db_column='typeID')
+#    activityid = models.IntegerField(db_column='activityID')
+#    producttypeid = models.ForeignKey(Type, db_column='materialTypeID')
+#    quantity = models.IntegerField(db_column='quantity')
+#    class Meta:
+#        managed = False
+#        db_table = 'industryActivityProducts'
+#    def __str__(self):
+#        return self.typeid.typename + " : " + self.materialtypeid.typename
+
 @python_2_unicode_compatible
 class Region(models.Model):
     regionid = models.AutoField(db_column='regionID', primary_key=True)
@@ -163,7 +189,7 @@ class MarketOrder(models.Model):
     orderid = models.BigIntegerField(db_column='orderID', primary_key=True)
     generationdate = models.DateTimeField(db_column='generationDate')
     issuedate = models.DateTimeField(db_column='issueDate')
-    typeid = models.ForeignKey(Type, db_column='typeID')
+    typeid = models.ForeignKey(Type, db_column='typeID', db_constraint=False)
     price = models.FloatField()
     volentered = models.IntegerField(db_column='volEntered')
     volremaining = models.IntegerField(db_column='volRemaining')
@@ -183,7 +209,7 @@ class MarketOrder(models.Model):
 class MarketHistory(models.Model):
     region = models.ForeignKey(Region, db_column='regionID')
     date = models.DateField()
-    typeID = models.ForeignKey(Type, db_column='typeID')
+    typeID = models.ForeignKey(Type, db_column='typeID', db_constraint=False)
     price_low = models.FloatField()
     price_high = models.FloatField()
     price_average = models.FloatField()

@@ -35,7 +35,7 @@ queue.on('job complete', function(id) {
     });
 });
 
-queue.process('orders', 1, function(job, done) {
+queue.process('orders', 2, function(job, done) {
     // console.log("Processing job (" + (job.data.rowsets.length > 0 ? job.data.rowsets[0].rows.length : 0) + " orders)");
 
     // TODO: Support multiple rowsets
@@ -62,6 +62,8 @@ queue.process('orders', 1, function(job, done) {
         done("Unexpected column structure: " + job.data.columns);
         return;
     }
+    
+    // TODO: Refactor this to: UPDATE genDate<now SET active=0 to eliminate a select query
     
     connection.query('SELECT `generationDate` FROM `marketOrders` WHERE `typeID`=? AND `regionID`=? LIMIT 1', 
         [job.data.rowsets[0].typeID, job.data.rowsets[0].regionID], 
@@ -127,7 +129,7 @@ queue.process('orders', 1, function(job, done) {
     );
 });
 
-queue.process('history', 1, function(job, done) {
+queue.process('history', 2, function(job, done) {
     // console.log("Processing job (" + (job.data.rowsets.length > 0 ? job.data.rowsets[0].rows.length : 0) + " histories)");
 
     if (job.data.rowsets.length != 1) {

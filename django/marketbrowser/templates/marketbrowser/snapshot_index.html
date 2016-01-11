@@ -1,0 +1,13 @@
+{% extends "marketbrowser/base.html" %}
+{% load humanize %}
+
+{% block head %}
+<link rel="icon" type="image/png" href="http://image.eveonline.com/InventoryType/{{ type.typeid }}_64.png">
+<title>{{ type }} in {{ region }}</title>
+{% endblock %}
+
+{% block content %}
+<h1>Market Snapshot</h1>
+<p>Data last updated {{ freshness|naturaltime }}</p>
+<a name="sell"><h2>Sell Orders:</h2></a>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "marketbrowser/base.html" %}
+{% load humanize %}
+
+{% block head %}
+<title>Manufacturing</title>
+{% endblock %}
+
+{% block content %}
+
+{% if result %}
+<table class="table table-condensed table-hover">
+    <thead>
+    <tr>
+        <th style="width:42px"></th>
+        <th class="grow">Item</th>
+        <th class="shrink">Product Value</th>
+        <th class="shrink">Material Cost</th>
+        <th class="shrink">Profit</th>
+        <th class="shrink">Profit/hour</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for type in result %}
+    <tr>
+        <td style="width:42px"><img src="http://image.eveonline.com/InventoryType/{{type.pk}}_32.png"></img></td>
+        <td class="grow">{{ type.prodTypeName }}</td>
+        <td class="shrink"><a href="/market/10000002/{{type.pk}}/">{{ type.prodPrice|floatformat:"2"|intcomma }}</a></td>
+        <td class="shrink">{{ type.matPrice|floatformat:"2"|intcomma }}</td>
+        <td class="shrink">{{ type.profit|floatformat:"2"|intcomma }}</td>
+        <td class="shrink">{{ type.iph|floatformat:"2"|intcomma }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

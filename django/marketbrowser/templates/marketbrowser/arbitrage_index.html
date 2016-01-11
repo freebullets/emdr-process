@@ -24,9 +24,9 @@
     {% for type in result %}
     <tr>
         <td class="shrink">{{ type.typename }}</td>
-        <td class="shrink"><a href="/market/{{type.citadelRegion}}/{{type.pk}}/">{{ type.citadelSell|floatformat:"2"|intcomma }}</a></td>
+        <td class="shrink"><a href="/market/{{type.citadelRegion}}/{{type.pk}}/#sell">{{ type.citadelSell|floatformat:"2"|intcomma }}</a></td>
         <td class="shrink">{{ type.citadelUnits|intcomma }}</td>
-        <td class="shrink"><a href="/market/{{type.forgeRegion}}/{{type.pk}}/">{{ type.forgeBuy|floatformat:"2"|intcomma }}</a></td>
+        <td class="shrink"><a href="/market/{{type.forgeRegion}}/{{type.pk}}/#buy">{{ type.forgeBuy|floatformat:"2"|intcomma }}</a></td>
         <td class="shrink">{{ type.forgeUnits|intcomma }}</td>
         <td class="shrink">{{ type.profit|floatformat:"2"|intcomma }}</td>
         <td class="shrink">{{ type.dateDiff }}</td>

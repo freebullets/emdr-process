@@ -10,13 +10,17 @@ body {
     padding-top: 50px; 
 }
 
+.twitter-typeahead, .tt-hint, .tt-input, .tt-menu, .tt-dropdown-menu {
+    width: 100%;
+}
+
 table {
     max-height: 200px;
     overflow: auto;
 }
 
 table td.shrink {
-    white-space:nowrap
+    white-space: nowrap
 }
 table td.expand {
     width: 100%

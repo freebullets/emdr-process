@@ -11,7 +11,7 @@
 <h1><img src="http://image.eveonline.com/InventoryType/{{ type.typeid }}_64.png" class="img-rounded">{{ type }} in {{ region }}</h1>
 <p>Data last updated {{ freshness|naturaltime }}</p>
     {% if sells %}
-    <h2>Sell Orders:</h2>
+    <a name="sell"></a><h2>Sell Orders:</h2>
     <table class="table table-condensed table-hover">
         <thead>
         <tr>
@@ -34,7 +34,7 @@
     </table>
     {% endif %}
     {% if buys %}
-    <h2>Buy Orders:</h2>
+    <a name="buy"></a><h2>Buy Orders:</h2>
     <table class="table table-condensed table-hover">
         <thead>
         <tr>
