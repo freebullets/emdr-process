@@ -25,14 +25,16 @@ https://evetools.xyz (soon)
 ### Frontend
  - Django
  - Bootstrap
- - Twitter's autocomplete
+ - Twitter autocomplete
+ 
 ### Backend
  - ZeroMQ
  - MariaDB
- - Python
+ - Python Implementation
    - HotQueue
- - Node.js
+ - Node.js Implementation
    - Kue
+ - Go Implementation
 
 ## Performance
 
